@@ -90,7 +90,7 @@ class flood extends Simulation {
 //		Add More Flows to same executions with independent runtime Config
 //		scn.inject(atOnceUsers(1))
 	).protocols(httpProtocol)
-		.maxDuration(300) //hold for 30 seconds
+		.maxDuration(300) //hold for 300 seconds
 
 
 	//Execute Code after end of Test
