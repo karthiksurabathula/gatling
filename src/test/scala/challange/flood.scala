@@ -48,38 +48,41 @@ class flood extends Simulation {
 		"X-Requested-With" -> "XMLHttpRequest")
 
 	val scn = scenario("flood")
-		// Launch
-		.exec(FloodIO.launch)
-		.pause(1)
-		// Step1_start
-		.exec(FloodIO.step1)
-		.pause(1)
-		.feed(data)
-		// Step2_next
-		.exec(FloodIO.step2)
-		.pause(1)
-		// Custom code to be added to capture data and process it before sending to next step
-		.exec	(
-			session => {
-				Util.setChallangerRadioAndSelected(session);
-			}
-		)
-		// Step3_next
-		.exec(FloodIO.step3)
-		.pause(1)
-		// Step4_next
-		.exec(FloodIO.step4)
-		.pause(1)
-		//Clear Unused correlations - to reduce heap size(Not mandatory to clear)
-		.exec(
-			session => {
-				session
-					.remove("challenger_order")
-					.remove("challenger_value")
-			}
-		)
-		// Step5_next
-		.exec(FloodIO.step5)
+		//Required to hold the users
+		.forever() {
+			// Launch
+			exec(FloodIO.launch)
+				.pause(1)
+				// Step1_start
+				.exec(FloodIO.step1)
+				.pause(1)
+				.feed(data)
+				// Step2_next
+				.exec(FloodIO.step2)
+				.pause(1)
+				// Custom code to be added to capture data and process it before sending to next step
+				.exec(
+					session => {
+						Util.setChallangerRadioAndSelected(session);
+					}
+				)
+				// Step3_next
+				.exec(FloodIO.step3)
+				.pause(1)
+				// Step4_next
+				.exec(FloodIO.step4)
+				.pause(1)
+				//Clear Unused correlations - to reduce heap size(Not mandatory to clear)
+				.exec(
+					session => {
+						session
+							.remove("challenger_order")
+							.remove("challenger_value")
+					}
+				)
+				// Step5_next
+				.exec(FloodIO.step5)
+		}
 
 	//Execution Scenario
 	setUp(
@@ -87,7 +90,7 @@ class flood extends Simulation {
 //		Add More Flows to same executions with independent runtime Config
 //		scn.inject(atOnceUsers(1))
 	).protocols(httpProtocol)
-		.maxDuration(30) //hold for 30 seconds
+		.maxDuration(300) //hold for 30 seconds
 
 
 	//Execute Code after end of Test
