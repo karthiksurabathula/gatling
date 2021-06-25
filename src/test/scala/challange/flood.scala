@@ -86,7 +86,7 @@ class flood extends Simulation {
 
 	//Execution Scenario
 	setUp(
-		scn.inject(constantUsersPerSec(users) during(20)),  // Ramp-up users in 20 seconds
+		scn.inject(rampUsers(users) during(20)),  // Ramp-up users in 20 seconds
 //		Add More Flows to same executions with independent runtime Config
 //		scn.inject(atOnceUsers(1))
 	).protocols(httpProtocol)
